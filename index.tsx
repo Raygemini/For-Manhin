@@ -17,7 +17,7 @@ root.render(
 );
 
 registerSW({
-  immediate:true
+  immediate: true,
 })
 
 // 註冊 Service Worker 以便在 Android 上安裝 App

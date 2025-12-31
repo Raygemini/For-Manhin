@@ -1,6 +1,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { registerSW } from 'virtual:pwa-register';
 import App from './App';
 
 const rootElement = document.getElementById('root');
@@ -14,6 +15,10 @@ root.render(
     <App />
   </React.StrictMode>
 );
+
+registerSW({
+  immediate:true
+})
 
 // 註冊 Service Worker 以便在 Android 上安裝 App
 if ('serviceWorker' in navigator) {

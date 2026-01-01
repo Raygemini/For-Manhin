@@ -3,7 +3,7 @@
   "name": "小學一年級生字筆順王",
   "short_name": "筆順王",
   "description": "專為小一學生設計的中文筆順練習遊戲",
-  "start_url": "./index.html",
+  "start_url": "./",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#FFF9C4",

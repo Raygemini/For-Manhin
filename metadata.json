@@ -1,8 +1,5 @@
 {
   "name": "小學一年級生字筆順王",
   "description": "一個專為一年級小朋友設計的卡通風中文筆順練習小遊戲。結合 Gemini AI 提供生字解釋與例句，透過互動式引導讓學習更有趣。",
-  "requestFramePermissions": [
-    "camera",
-    "microphone"
-  ]
+  "requestFramePermissions": []
 }

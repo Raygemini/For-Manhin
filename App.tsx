@@ -20,6 +20,7 @@ const App: React.FC = () => {
   const [avatar, setAvatar] = useState<string | null>(null);
   const [avatarPrompt, setAvatarPrompt] = useState('');
   const [isGeneratingAvatar, setIsGeneratingAvatar] = useState(false);
+  const [showAPKGuide, setShowAPKGuide] = useState(false);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -172,7 +173,6 @@ const App: React.FC = () => {
         <div className="w-10"></div>
       </div>
 
-      {/* Avatar Customization */}
       <div className="bg-white/90 p-5 rounded-3xl border-4 border-yellow-400 space-y-4">
         <div className="flex flex-col items-center space-y-4">
           <div className="w-32 h-32 bg-orange-100 rounded-3xl border-4 border-orange-300 overflow-hidden shadow-inner flex items-center justify-center">
@@ -203,7 +203,7 @@ const App: React.FC = () => {
         </div>
 
         <div className="border-t-2 border-dashed border-gray-200 pt-4">
-          <p className="text-sm font-bold text-teal-700 mb-2">或是讓 AI 幫你變一個：</p>
+          <p className="text-sm font-bold text-teal-700 mb-2">讓 AI 召喚夥伴：</p>
           <div className="flex space-x-2">
             <input 
               type="text" 
@@ -221,6 +221,15 @@ const App: React.FC = () => {
             </button>
           </div>
         </div>
+      </div>
+
+      <div className="bg-green-50 p-4 rounded-2xl border-2 border-green-200">
+        <button 
+          onClick={() => setShowAPKGuide(true)}
+          className="w-full text-green-700 font-bold flex items-center justify-center space-x-2"
+        >
+          <span>✨</span><span>免費 APK 打包方案攻略</span>
+        </button>
       </div>
 
       <div className="flex-1">
@@ -241,6 +250,44 @@ const App: React.FC = () => {
       >
         清除所有資料
       </button>
+
+      {/* APK Guide Modal */}
+      {showAPKGuide && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[100] p-6">
+          <div className="bg-white rounded-3xl p-6 w-full max-w-sm max-h-[85vh] overflow-y-auto space-y-5">
+            <div className="flex justify-between items-center border-b-2 border-green-100 pb-2">
+               <h3 className="text-xl font-bold text-green-700">免費 APK 打包方案</h3>
+               <button onClick={() => setShowAPKGuide(false)} className="text-gray-400 text-2xl">&times;</button>
+            </div>
+            
+            <section className="space-y-2">
+              <h4 className="font-bold text-teal-700 flex items-center"><span className="mr-2">🌱</span>1. Capacitor (最推薦)</h4>
+              <p className="text-[11px] text-gray-600 leading-relaxed">這是目前主流的免費開源方案。只要在電腦安裝好 Node.js 和 Android Studio，指令一打就能生成原生 Android 專案，你可以永久免費地更新你的 App。</p>
+            </section>
+
+            <section className="space-y-2">
+              <h4 className="font-bold text-teal-700 flex items-center"><span className="mr-2">☁️</span>2. GitHub Actions (免電腦效能)</h4>
+              <p className="text-[11px] text-gray-600 leading-relaxed">如果你的電腦跑不動 Android Studio，可以把代碼放到 GitHub。搜尋 <b>"PWA to APK GitHub Action"</b>，設定好之後，GitHub 的雲端伺服器會自動幫你打包並產生 APK 下載連結，完全免費。</p>
+            </section>
+
+            <section className="space-y-2">
+              <h4 className="font-bold text-teal-700 flex items-center"><span className="mr-2">🔧</span>3. Bubblewrap CLI</h4>
+              <p className="text-[11px] text-gray-600 leading-relaxed">這是 Google 開源的命令行工具。它專為 PWA 設計，能產生非常輕量的 APK。操作指令：<code className="bg-gray-100">npm install -g @bubblewrap/cli</code>。</p>
+            </section>
+
+            <div className="bg-orange-50 p-3 rounded-xl border border-orange-200">
+               <p className="text-[10px] text-orange-800 leading-relaxed"><b>結論：</b>不需要花錢買轉檔軟體。只要你有電腦和一點耐心安裝環境，<b>Capacitor</b> 是最穩定且專業的零成本選擇。</p>
+            </div>
+
+            <button 
+              onClick={() => setShowAPKGuide(false)}
+              className="w-full bg-green-600 text-white py-3 rounded-2xl font-bold shadow-lg"
+            >
+              太棒了，我試試看！
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 

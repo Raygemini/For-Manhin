@@ -1,7 +1,7 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { WordInfo } from "../types";
 
-// 手動宣告 process 結構以避免 TypeScript 報錯
+// 手動宣告 process 結構以避免 TypeScript 報錯（因為我們在 tsconfig 移除了 node types）
 declare var process: {
   env: {
     API_KEY: string;

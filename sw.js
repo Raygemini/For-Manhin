@@ -4,8 +4,8 @@ const ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './public/icon-192.png',
-  './public/icon-512.png',
+  './icon-192.png',
+  './icon-512.png',
   'https://cdn.tailwindcss.com',
   'https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js',
   'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=ZCOOL+KuaiLe&display=swap'

@@ -1,10 +1,12 @@
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { GameState, Category, WordInfo } from './types';
-import { GRADE_1_WORDS, COLORS } from './constants';
+import { GRADE_1_WORDS } from './constants';
 import { fetchWordDetails } from './services/geminiService';
 import StrokePractice from './components/StrokePractice';
 import InfoCard from './components/InfoCard';
+
+const STORAGE_KEY = 'stroke_order_mastered_words';
 
 const App: React.FC = () => {
   const [gameState, setGameState] = useState<GameState>(GameState.START);
@@ -12,17 +14,33 @@ const App: React.FC = () => {
   const [wordIndex, setWordIndex] = useState(0);
   const [wordInfo, setWordInfo] = useState<WordInfo | null>(null);
   const [loading, setLoading] = useState(false);
-  const [stars, setStars] = useState(0);
+  const [masteredWords, setMasteredWords] = useState<Set<string>>(new Set());
   const [installPrompt, setInstallPrompt] = useState<any>(null);
 
   const currentWord = GRADE_1_WORDS[category][wordIndex];
 
+  // 初始化：載入進度與安裝提示
   useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setMasteredWords(new Set(parsed));
+      } catch (e) {
+        console.error('Failed to load progress', e);
+      }
+    }
+
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       setInstallPrompt(e);
     });
   }, []);
+
+  // 儲存進度
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(masteredWords)));
+  }, [masteredWords]);
 
   const updateWordInfo = useCallback(async (word: string) => {
     setLoading(true);
@@ -44,7 +62,11 @@ const App: React.FC = () => {
   };
 
   const handleQuizComplete = () => {
-    setStars(prev => prev + 1);
+    setMasteredWords(prev => {
+      const next = new Set(prev);
+      next.add(currentWord);
+      return next;
+    });
     setGameState(GameState.CELEBRATION);
   };
 
@@ -65,6 +87,16 @@ const App: React.FC = () => {
     if (outcome === 'accepted') setInstallPrompt(null);
   };
 
+  const getCategoryProgress = (cat: Category) => {
+    const words = GRADE_1_WORDS[cat];
+    const masteredCount = words.filter(w => masteredWords.has(w)).length;
+    return {
+      count: masteredCount,
+      total: words.length,
+      percent: (masteredCount / words.length) * 100
+    };
+  };
+
   const renderStartScreen = () => (
     <div className="flex flex-col items-center justify-center h-full p-6 text-center space-y-8">
       <div className="animate-bounce">
@@ -73,22 +105,39 @@ const App: React.FC = () => {
       </div>
       
       <div className="grid grid-cols-2 gap-4 w-full max-w-md">
-        {(Object.keys(GRADE_1_WORDS) as Category[]).map(cat => (
-          <button
-            key={cat}
-            onClick={() => handleStart(cat)}
-            className="bg-white border-4 border-teal-400 p-4 rounded-3xl shadow-lg hover:bg-teal-50 transform transition active:scale-95 flex flex-col items-center"
-          >
-            <span className="text-2xl font-bold text-teal-800 font-kids">{cat}</span>
-            <span className="text-xs text-teal-600 mt-1">練習筆順</span>
-          </button>
-        ))}
+        {(Object.keys(GRADE_1_WORDS) as Category[]).map(cat => {
+          const prog = getCategoryProgress(cat);
+          const isFinished = prog.count === prog.total;
+          return (
+            <button
+              key={cat}
+              onClick={() => handleStart(cat)}
+              className={`relative bg-white border-4 ${isFinished ? 'border-yellow-400' : 'border-teal-400'} p-4 rounded-3xl shadow-lg hover:bg-teal-50 transform transition active:scale-95 flex flex-col items-center overflow-hidden`}
+            >
+              {/* Progress Bar Background */}
+              <div 
+                className="absolute bottom-0 left-0 h-1 bg-teal-400 transition-all duration-500" 
+                style={{ width: `${prog.percent}%` }}
+              />
+              
+              <span className="text-2xl font-bold text-teal-800 font-kids">{cat}</span>
+              <div className="flex items-center space-x-1 mt-1">
+                <span className={`text-xs font-bold ${isFinished ? 'text-yellow-600' : 'text-teal-600'}`}>
+                  {prog.count} / {prog.total}
+                </span>
+                {isFinished && <span className="text-xs">🏆</span>}
+              </div>
+            </button>
+          );
+        })}
       </div>
 
       <div className="flex flex-col items-center space-y-4">
-        <div className="p-4 bg-white/50 rounded-full flex items-center space-x-2">
+        <div className="p-4 bg-white/50 rounded-full flex items-center space-x-2 border-2 border-white/80">
           <span className="text-3xl">⭐</span>
-          <span className="text-2xl font-bold text-orange-600 font-kids">{stars} 顆星星</span>
+          <span className="text-2xl font-bold text-orange-600 font-kids">
+            已學會 {masteredWords.size} 個字
+          </span>
         </div>
 
         {installPrompt && (
@@ -118,12 +167,12 @@ const App: React.FC = () => {
           <span className="text-yellow-700 font-medium text-xs">({wordIndex + 1}/{GRADE_1_WORDS[category].length})</span>
         </div>
         <div className="flex items-center space-x-1">
-          <span className="text-xl">⭐</span>
-          <span className="font-bold text-orange-600">{stars}</span>
+          <span className="text-xl">{masteredWords.has(currentWord) ? '✅' : '⭐'}</span>
+          <span className="font-bold text-orange-600">{masteredWords.size}</span>
         </div>
       </div>
 
-      {/* Main Content Area - Scrollable if needed */}
+      {/* Main Content Area */}
       <div className="flex-1 w-full overflow-y-auto flex flex-col items-center py-2 space-y-4">
         <StrokePractice 
           character={currentWord} 

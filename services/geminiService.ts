@@ -1,6 +1,12 @@
-
 import { GoogleGenAI, Type } from "@google/genai";
 import { WordInfo } from "../types";
+
+// 手動宣告 process 結構以避免 TypeScript 報錯
+declare var process: {
+  env: {
+    API_KEY: string;
+  };
+};
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
@@ -24,7 +30,10 @@ export async function fetchWordDetails(word: string): Promise<WordInfo> {
       },
     });
 
-    const result = JSON.parse(response.text);
+    const text = response.text;
+    if (!text) throw new Error("Empty response from Gemini");
+    
+    const result = JSON.parse(text);
     return result;
   } catch (error) {
     console.error("Gemini API Error:", error);

@@ -6,8 +6,8 @@ const ASSETS = [
   './manifest.json',
   'https://cdn.tailwindcss.com',
   'https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js',
-  'https://placehold.co/192x192/ff7043/white/png?text=筆',
-  'https://placehold.co/512x512/ff7043/white/png?text=筆順王'
+  './icon-192.png',
+  './icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {

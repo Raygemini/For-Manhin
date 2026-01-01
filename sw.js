@@ -1,13 +1,13 @@
 
-const CACHE_NAME = 'stroke-order-king-v5';
+const CACHE_NAME = 'stroke-order-king-v6';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
+  './icon-192.png',
+  './icon-512.png',
   'https://cdn.tailwindcss.com',
   'https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js',
-  'https://img.icons8.com/clouds/192/calligraphy.png',
-  'https://img.icons8.com/clouds/512/calligraphy.png',
   'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=ZCOOL+KuaiLe&display=swap'
 ];
 

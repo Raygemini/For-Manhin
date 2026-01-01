@@ -1,13 +1,13 @@
 
-const CACHE_NAME = 'stroke-order-king-v2';
+const CACHE_NAME = 'stroke-order-king-v4';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
   'https://cdn.tailwindcss.com',
   'https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js',
-  './icon-192.png',
-  './icon-512.png'
+  'https://img.icons8.com/clouds/192/calligraphy.png',
+  'https://img.icons8.com/clouds/512/calligraphy.png'
 ];
 
 self.addEventListener('install', (event) => {

@@ -3,26 +3,26 @@
   "name": "小學一年級生字筆順王",
   "short_name": "筆順王",
   "description": "專為小一學生設計的中文筆順練習遊戲",
-  "start_url": "./",
+  "start_url": "./index.html",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#FFF9C4",
   "theme_color": "#FF7043",
   "icons": [
     {
-      "src": "./icon-192.png",
+      "src": "https://img.icons8.com/clouds/192/calligraphy.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icon-512.png",
+      "src": "https://img.icons8.com/clouds/512/calligraphy.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icon-512.png",
+      "src": "https://img.icons8.com/clouds/512/calligraphy.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
